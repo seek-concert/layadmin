@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>通用后台管理系统登录</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/login.css" />
+</head>
+
+<body>
+<div class="m-login-bg">
+    <div class="m-login">
+        <h3>后台系统登录</h3>
+        <div class="m-login-warp">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <input type="text" name="username" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <input type="text" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="verity" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-inline">
+                        <img class="verifyImg" onclick="this.src=this.src+'?c='+Math.random();" src="{:captcha_src()}" alt="验证码加载失败" />
+                    </div>
+                </div>
+                <div class="layui-form-item m-login-btn">
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-normal" id="loginbtn" lay-submit lay-filter="login">登录</button>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="reset" class="layui-btn layui-btn-primary">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p class="copyright">Copyright 2018-{:date('Y')} by seek-concert</p>
+    </div>
+</div>
+<script src="__STATIC__/admin/js/jquery2-1-4.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/admin/js/ajax_sub.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/admin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    //回车绑定
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) {
+            $("#loginbtn").click();
+        }
+    };
+    //登陆
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form(),
+            layer = layui.layer;
+        //监听提交
+        form.on('submit(login)', function(data) {
+            var username =data.field.username;
+            var password =data.field.password;
+            var code =data.field.verity;
+            //验证
+            if (username.length<4||username.length>12) {
+                layer.msg("用户名为4~12个字符", {
+                    icon: 5,
+                    anim: 6
+                });
+                return false;
+            }
+            if (password.length<6||password.length>12) {
+                layer.msg("密码为6~12个字符", {
+                    icon: 5,
+                    anim: 6
+                });
+                return false;
+            }
+            if (4!==code.length) {
+                layer.msg("验证码为4个字符", {
+                    icon: 5,
+                    anim: 6
+                });
+                return false;
+            }
+            //提交
+            ajaxAct("{:url('index/login')}", {username:username, password:password,code:code});
+            if(1==rst.code){
+                layer.msg(rst.msg, {
+                    icon: 6,
+                    anim: 6
+                });
+                // location.href=rst.url;
+            }else if(0==rst.code){
+                layer.alert(rst.msg, {
+                    title: '提示信息'
+                });
+            }else{
+                layer.alert('登陆失败，请稍后重试!', {
+                    title: '提示信息'
+                });
+            }
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+
+</html>
