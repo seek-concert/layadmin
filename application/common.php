@@ -195,3 +195,123 @@ function create_guid(){
         .substr($charid,16, 4).$hyphen.substr($charid,20,12);
     return $guid;
 }
+
+/** 获取IP
+ *  @return string
+ */
+function get_client_ip($type = 0) {
+    $type       =  $type ? 1 : 0;
+    static $ip  =   NULL;
+    if ($ip !== NULL) return $ip[$type];
+    if(isset($_SERVER['HTTP_X_REAL_IP'])){//nginx 代理模式下，获取客户端真实IP
+        $ip=$_SERVER['HTTP_X_REAL_IP'];
+    }elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {//客户端的ip
+        $ip     =   $_SERVER['HTTP_CLIENT_IP'];
+    }elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {//浏览当前页面的用户计算机的网关
+        $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        $pos    =   array_search('unknown',$arr);
+        if(false !== $pos) unset($arr[$pos]);
+        $ip     =   trim($arr[0]);
+    }elseif (isset($_SERVER['REMOTE_ADDR'])) {
+        $ip     =   $_SERVER['REMOTE_ADDR'];//浏览当前页面的用户计算机的ip地址
+    }else{
+        $ip=$_SERVER['REMOTE_ADDR'];
+    }
+    // IP地址合法验证
+    $long = sprintf("%u",ip2long($ip));
+    $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
+    return $ip[$type];
+}
+
+/** cURL函数简单封装
+ * @param $url
+ * @param null $data
+ * @return mixed
+ */
+function https_request($url, $data = null)
+{
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+    if (!empty($data)) {
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    }
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $output = curl_exec($curl);
+    curl_close($curl);
+    return $output;
+}
+
+/** 清除缓存文件夹
+ * @param mixed|string $path      文件夹
+ * @return bool
+ */
+function deleteAll($path)
+{
+    if(!$path){
+        return false;
+    }
+    if (file_exists($path)) {
+        $op = dir($path);
+        while (false != ($item = $op->read())) {
+            if ($item == '.' || $item == '..') {
+                continue;
+            }
+            if (is_dir($op->path . '/' . $item)) {
+                deleteAll($op->path . '/' . $item);
+                rmdir($op->path . '/' . $item);
+            } else {
+                unlink($op->path . '/' . $item);
+            }
+        }
+    }else{
+        return false;
+    }
+
+    return true;
+}
+
+
+/** ip限制访问
+ */
+//function ip_limit_access(){
+//    $redis = new Redis();
+//    $redis->connect('127.0.0.1', 6379);
+//
+//    $key = get_client_ip();
+//
+//    $limit = 100;
+//
+//    $check = $redis->exists($key);
+//    if($check){
+//        $redis->incr($key);
+//        $count = $redis->get($key);
+//        if($count > $limit){
+//            exit('已经超出了限制次数');
+//        }
+//    }else{
+//        $redis->incr($key);
+//
+//        $redis->expire($key,60);
+//    }
+//
+//    $count = $redis->get($key);
+//    echo '第 '.$count.' 次请求';
+//    return true;
+//}
+
+/* 编码转换
+    $content        内容
+    $to_encoding    目标编码，默认为UTF-8
+    $from_encoding  源编码，默认为GBK
+*/
+function mbStrreplace($content,$to_encoding="UTF-8",$from_encoding="GBK") {
+    $content=mb_convert_encoding($content,$to_encoding,$from_encoding);
+    $str=mb_convert_encoding("　",$to_encoding,$from_encoding);
+    $content=mb_eregi_replace($str," ",$content);
+    $content=mb_convert_encoding($content,$from_encoding,$to_encoding);
+    $content=trim($content);
+    return $content;
+}
