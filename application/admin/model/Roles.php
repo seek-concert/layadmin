@@ -1,16 +1,15 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| 后台菜单模型
+| 后台用户角色模型
 |--------------------------------------------------------------------------
 */
-
 namespace app\admin\model;
 use think\Model;
 
-class Menus extends Model
+class Roles extends Model
 {
-    protected $table = 'lay_menu';
+    protected $table = 'lay_role';
     protected $field=true;
     protected $type = [
 

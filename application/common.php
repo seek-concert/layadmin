@@ -3,6 +3,52 @@
 // | @自定义常用
 // +----------------------------------------------------------------------
 
+/**
+ * 统一返回信息
+ * @param $code
+ * @param $data
+ * @param $msg
+ * @return array
+ */
+function msg($code, $data, $msg)
+{
+    return compact('code', 'data', 'msg');
+}
+
+/**
+ * 整理菜单住方法
+ * @param $param
+ * @return array
+ */
+function prepareMenu($param)
+{
+    $param = objToArray($param);
+    $parent = []; //父类
+    $child = [];  //子类
+
+    foreach($param as $key=>$vo){
+
+        if(0 == $vo['type_id']){
+            $vo['href'] = '#';
+            $parent[] = $vo;
+        }else{
+            $vo['href'] = url($vo['control_name'] .'/'. $vo['action_name']); //跳转地址
+            $child[] = $vo;
+        }
+    }
+
+    foreach($parent as $key=>$vo){
+        foreach($child as $k=>$v){
+
+            if($v['type_id'] == $vo['id']){
+                $parent[$key]['child'][] = $v;
+            }
+        }
+    }
+    unset($child);
+
+    return $parent;
+}
 
 /** 批量 更新或插入数据的sql
  * @param string $table         数据表名
@@ -168,6 +214,15 @@ function batch_update_sql($table='', $insert_columns=[], $values=[], $update_col
     return $sqls;
 }
 
+/**
+ * 对象转换成数组
+ * @param $obj
+ * @return array
+ */
+function objToArray($obj)
+{
+    return json_decode(json_encode($obj), true);
+}
 
 /** 获取操作控制器和方法
  * @return array
@@ -194,33 +249,6 @@ function create_guid(){
         .substr($charid,14, 2).substr($charid,12, 2).$hyphen
         .substr($charid,16, 4).$hyphen.substr($charid,20,12);
     return $guid;
-}
-
-/** 获取IP
- *  @return string
- */
-function get_client_ip($type = 0) {
-    $type       =  $type ? 1 : 0;
-    static $ip  =   NULL;
-    if ($ip !== NULL) return $ip[$type];
-    if(isset($_SERVER['HTTP_X_REAL_IP'])){//nginx 代理模式下，获取客户端真实IP
-        $ip=$_SERVER['HTTP_X_REAL_IP'];
-    }elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {//客户端的ip
-        $ip     =   $_SERVER['HTTP_CLIENT_IP'];
-    }elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {//浏览当前页面的用户计算机的网关
-        $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        $pos    =   array_search('unknown',$arr);
-        if(false !== $pos) unset($arr[$pos]);
-        $ip     =   trim($arr[0]);
-    }elseif (isset($_SERVER['REMOTE_ADDR'])) {
-        $ip     =   $_SERVER['REMOTE_ADDR'];//浏览当前页面的用户计算机的ip地址
-    }else{
-        $ip=$_SERVER['REMOTE_ADDR'];
-    }
-    // IP地址合法验证
-    $long = sprintf("%u",ip2long($ip));
-    $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
-    return $ip[$type];
 }
 
 /** cURL函数简单封装

@@ -14,5 +14,11 @@ class Base extends Controller
     {
         parent::_initialize();
     }
+
+    /* ========== 左侧菜单栏 ========== */
+    public function get_menu(){
+        $role_id = session('role_id');
+
+    }
     
 }

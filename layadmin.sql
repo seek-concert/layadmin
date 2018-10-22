@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : phpwamp
 Source Server Version : 50554
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : layadmin
 
 Target Server Type    : MYSQL
 Target Server Version : 50554
 File Encoding         : 65001
 
-Date: 2018-10-09 19:05:48
+Date: 2018-10-19 16:57:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,13 +22,13 @@ DROP TABLE IF EXISTS `lay_admin`;
 CREATE TABLE `lay_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '上级ID 默认为0',
-  `name` enum('') NOT NULL COMMENT '名称',
+  `name` varchar(50) NOT NULL COMMENT '名称',
   `username` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(100) NOT NULL COMMENT '用户密码',
   `secret` varchar(100) NOT NULL COMMENT '密钥',
   `type` tinyint(10) NOT NULL DEFAULT '1' COMMENT '用户类型 (默认 为1)   1为受约束角色 0为超级管理员',
   `status` tinyint(10) NOT NULL DEFAULT '1' COMMENT '状态 0为禁用  1为启用',
-  `lastloginip` char(15) DEFAULT NULL COMMENT '最近一次登陆ip',
+  `last_login_ip` char(15) DEFAULT NULL COMMENT '最近一次登陆ip',
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE `lay_admin` (
 -- ----------------------------
 -- Records of lay_admin
 -- ----------------------------
-INSERT INTO `lay_admin` VALUES ('1', '0', '', 'admin', 'd0f1cfce4eaf34b6127e5bbd43cf401b', 'abcdef', '1', '1', '27.14.253.213', null, null, null);
+INSERT INTO `lay_admin` VALUES ('1', '0', '', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'AA01DFCB-BF3A-F3E7-08B2-B538071741AE', '1', '1', '127.0.0.1', null, null, null);
 
 -- ----------------------------
 -- Table structure for lay_config
@@ -88,3 +88,23 @@ CREATE TABLE `lay_menu` (
 -- ----------------------------
 -- Records of lay_menu
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for lay_role
+-- ----------------------------
+DROP TABLE IF EXISTS `lay_role`;
+CREATE TABLE `lay_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(155) NOT NULL COMMENT '角色名称',
+  `rule` varchar(255) DEFAULT '' COMMENT '权限节点数据',
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL,
+  `deleted_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色权限表';
+
+-- ----------------------------
+-- Records of lay_role
+-- ----------------------------
+INSERT INTO `lay_role` VALUES ('1', '超级管理员', '*', null, null, null);
+INSERT INTO `lay_role` VALUES ('2', '系统维护员', '1,2,3,4,5,6,7,8,9,10,15,16,17,18,19,20,22', null, null, null);
