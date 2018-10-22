@@ -39,7 +39,7 @@ class Index extends Controller
         if(!captcha_check($data['code'])){
             return json(msg(0,'','验证码输入错误！'));
         };
-        $admin_info = Admins::field(['id','name','username','password','status','role_id'])
+        $admin_info = Admins::field(['id','name','username','password','status','type','role_id'])
             ->where(['username'=>$data['username']])
             ->find();
         if(is_null($admin_info)){
@@ -64,6 +64,7 @@ class Index extends Controller
         }
         session('name',$admin_info->name);
         session('secret',$secret);
+        session('type',$admin_info['type']);
         session('role_id',$admin_info['role_id']);
 
         return  json(msg(1,url('home/index'),'登录成功'));

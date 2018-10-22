@@ -45,21 +45,26 @@
                     <div class="logo-element">AD
                     </div>
                 </li>
-
-                <li class="menu">
-                    <a href="">
-                        <i class=""></i>
-                        <span class="nav-label"> </span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-
-                        <li>
-                            <a class="J_menuItem" href=""></a>
+                {if condition="!empty($menus)"}
+                    {foreach name="menus" item="menu"}
+                        <li class="menu">
+                            <a href="{$menu->url?:'#'}">
+                                <i class="{$menu->url?:''}"></i>
+                                <span class="nav-label">{$menu->name}</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            {if condition="!empty($menus->menu_child)"}
+                            <ul class="nav nav-second-level">
+                                {foreach name="$menus['menu_child']" item="menu_child"}
+                                <li>
+                                    <a class="J_menuItem" href="">{$menu_child->name}</a>
+                                </li>
+                                {/foreach}
+                            </ul>
+                            {/if}
                         </li>
-
-                    </ul>
-                </li>
+                    {/foreach}
+                {/if}
 
             </ul>
         </div>

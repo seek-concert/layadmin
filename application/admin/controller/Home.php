@@ -16,6 +16,8 @@ class Home extends Base
 
     /* ============ 后台首页 ============== */
     public function index(){
+        $menu = $this->get_menu();
+        $this->assign('menus',$menu);
         return view();
     }
 

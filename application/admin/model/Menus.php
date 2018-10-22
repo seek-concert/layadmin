@@ -15,4 +15,10 @@ class Menus extends Model
     protected $type = [
 
     ];
+
+    /*------ 菜单子级 ------*/
+    public function menuChild()
+    {
+        return $this->hasMany('menus','parent_id');
+    }
 }
