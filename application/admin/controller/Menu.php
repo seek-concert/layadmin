@@ -125,4 +125,18 @@ class Menu extends Base
         return view();
     }
 
+    /* ============ 删除菜单节点 ============== */
+    public function del(){
+        $param = input('');
+        if(!$param['id']){
+            return $this->error('请选择菜单节点！');
+        }
+        $rs = Menus::where(['id'=>$param['id']])->delete();
+        if($rs){
+            return $this->success('删除成功!');
+        }else{
+            return $this->error('删除失败!');
+        }
+    }
+
 }
