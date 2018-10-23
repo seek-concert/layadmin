@@ -14,4 +14,10 @@ class Admins extends Model
     protected $type = [
 
     ];
+
+    /*------ 后台用户角色 ------*/
+    public function adminRole()
+    {
+        return $this->hasOne('roles','id','role_id');
+    }
 }

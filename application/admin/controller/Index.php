@@ -31,15 +31,16 @@ class Index extends Controller
         if(!$data['password']){
             return json(msg(0,'','请输入密码！'));
         }
-        if(!$data['code']){
-            return json(msg(0,'','请输入验证码！'));
-        }
+//        if(!$data['code']){
+//            return json(msg(0,'','请输入验证码！'));
+//        }
 
         //验证数据
-        if(!captcha_check($data['code'])){
-            return json(msg(0,'','验证码输入错误！'));
-        };
-        $admin_info = Admins::field(['id','name','username','password','status','type','role_id'])
+//        if(!captcha_check($data['code'])){
+//            return json(msg(0,'','验证码输入错误！'));
+//        };
+        $admin_info = Admins::field(['id','name','username','password','status','role_id'])
+            ->with(['adminRole'])
             ->where(['username'=>$data['username']])
             ->find();
         if(is_null($admin_info)){
@@ -62,10 +63,12 @@ class Index extends Controller
         if (!model('admins')->where(['id'=>$admin_info['id']])->update($updateAdminData, FALSE)) {
             return json(msg(0,'','登录异常，请稍候尝试.'));
         }
+
         session('name',$admin_info->name);
         session('secret',$secret);
-        session('type',$admin_info['type']);
+        session('type',$admin_info['admin_role']['type']);
         session('role_id',$admin_info['role_id']);
+        session('role_name',$admin_info['admin_role']['name']);
 
         return  json(msg(1,url('home/index'),'登录成功'));
     }

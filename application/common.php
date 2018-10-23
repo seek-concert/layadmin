@@ -50,6 +50,48 @@ function prepareMenu($param)
     return $parent;
 }
 
+/**
+ * 拼装操作按钮
+ * @param $contrl
+ * @param $id
+ * @return array
+ */
+function makeButton($contrl,$id)
+{
+    return [
+        '编辑' => [
+            'href' => url($contrl.'/edit', ['id' => $id]),
+            'btnStyle' => 'primary',
+            'icon' => 'fa fa-paste'
+        ],
+        '删除' => [
+            'href' => "javascript:del(" .$id .")",
+            'btnStyle' => 'danger',
+            'icon' => 'fa fa-trash-o'
+        ]
+    ];
+}
+
+/**
+ * 生成操作按钮
+ * @param array $operate 操作按钮数组
+ * @return  string
+ */
+function showOperate($operate = [])
+{
+    if(empty($operate)){
+        return '';
+    }
+
+    $option = '';
+    foreach($operate as $key=>$vo){
+            $option .= ' <a href="' . $vo['href'] . '"><button type="button" class="btn btn-' . $vo['btnStyle'] . ' btn-sm">'.
+                '<i class="' . $vo['icon'] . '"></i> ' . $key . '</button></a>';
+    }
+
+    return $option;
+}
+
 /** 批量 更新或插入数据的sql
  * @param string $table         数据表名
  * @param array $insert_columns 数据字段
