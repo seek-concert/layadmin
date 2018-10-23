@@ -21,4 +21,10 @@ class Menus extends Model
     {
         return $this->hasMany('menus','parent_id');
     }
+
+    /*------ 菜单子级 ------*/
+    public function menuParent()
+    {
+        return $this->hasOne('menus','id','parent_id');
+    }
 }

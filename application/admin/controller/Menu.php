@@ -62,6 +62,7 @@ class Menu extends Base
             $rule = [
                 ['parent_id', 'require', '请填写上级菜单节点!'],
                 ['name', 'require', '请填写菜单节点!'],
+                ['name', 'unique:menu', '菜单节点已存在!'],
                 ['url', 'require', '请填写菜单节点url!']
             ];
             $result = $this->validate($param, $rule);
@@ -72,7 +73,7 @@ class Menu extends Base
             $model = new Menus();
             $rs =  $model->save($param);
             if($rs){
-                return $this->success('添加成功!');
+                return $this->success('添加成功!',url('menu/index'));
             }else{
                 return $this->error('添加失败!');
             }
@@ -86,4 +87,42 @@ class Menu extends Base
 
         return view();
     }
+
+
+    /* ============ 修改菜单节点 ============== */
+    public function edit(){
+        $param = input('');
+        if(!$param['id']){
+           return $this->error('请选择菜单节点！');
+        }
+        if(request()->isPost()){
+            $rule = [
+                ['name', 'require', '请填写菜单节点!'],
+//                ['name', 'unique:menu', '菜单节点已存在!'],
+                ['url', 'require', '请填写菜单节点url!']
+            ];
+            $result = $this->validate($param, $rule);
+            if (true !== $result) {
+                return $this->error($result);
+            }
+
+            $model = new Menus();
+            $rs =  $model->save($param,['id'=>$param['id']]);
+            if($rs){
+                return $this->success('修改成功!');
+            }else{
+                return $this->error('修改失败!');
+            }
+        }
+
+        $menu = Menus::with(['menuParent'])->where(['id'=>$param['id']])->find();
+        $this->assign([
+            'id'=>$param['id'],
+            'infos' => $menu,
+            'display' => config('menu_display')
+        ]);
+
+        return view();
+    }
+
 }
