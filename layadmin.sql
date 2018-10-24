@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50554
 File Encoding         : 65001
 
-Date: 2018-10-19 16:57:14
+Date: 2018-10-24 15:10:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,24 +21,24 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `lay_admin`;
 CREATE TABLE `lay_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '上级ID 默认为0',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `username` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(100) NOT NULL COMMENT '用户密码',
   `secret` varchar(100) NOT NULL COMMENT '密钥',
-  `type` tinyint(10) NOT NULL DEFAULT '1' COMMENT '用户类型 (默认 为1)   1为受约束角色 0为超级管理员',
   `status` tinyint(10) NOT NULL DEFAULT '1' COMMENT '状态 0为禁用  1为启用',
+  `role_id` tinyint(10) NOT NULL COMMENT '角色ID',
   `last_login_ip` char(15) DEFAULT NULL COMMENT '最近一次登陆ip',
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='后台用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='后台用户表';
 
 -- ----------------------------
 -- Records of lay_admin
 -- ----------------------------
-INSERT INTO `lay_admin` VALUES ('1', '0', '', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'AA01DFCB-BF3A-F3E7-08B2-B538071741AE', '1', '1', '127.0.0.1', null, null, null);
+INSERT INTO `lay_admin` VALUES ('1', '用户', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'EA026768-6794-5A2E-843B-0FF39935F1E8', '1', '2', '127.0.0.1', null, '1540345871', null);
+INSERT INTO `lay_admin` VALUES ('2', '小张', '123456', 'e10adc3949ba59abbe56e057f20f883e', '309D8163-741D-EB7D-EA07-61FB480FE0E9', '1', '2', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for lay_config
@@ -73,7 +73,7 @@ CREATE TABLE `lay_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '上级ID  默认为0',
   `name` varchar(255) NOT NULL COMMENT '菜单名称',
-  `icon` varchar(255) NOT NULL COMMENT '菜单图标',
+  `icon` varchar(255) DEFAULT NULL COMMENT '菜单图标',
   `url` varchar(255) NOT NULL COMMENT '菜单地址',
   `method` varchar(255) DEFAULT NULL COMMENT ' 限制请求方法，【get，post，put，delete】',
   `display` tinyint(255) NOT NULL DEFAULT '0' COMMENT '显示，【0隐藏，1显示】',
@@ -83,11 +83,21 @@ CREATE TABLE `lay_menu` (
   `updated_at` int(11) DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单节点表';
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='菜单节点表';
 
 -- ----------------------------
 -- Records of lay_menu
 -- ----------------------------
+INSERT INTO `lay_menu` VALUES ('1', '0', '系统管理', 'fa fa-desktop', '#', null, '1', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('2', '1', '菜单节点管理', '', '/admin/menu/index', null, '1', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('3', '1', '用户角色管理', '', '/admin/role/index', null, '1', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('4', '1', '后台用户管理', '', '/admin/admin/index', null, '1', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('5', '1', '网站配置管理', '', '/admin/config/index', null, '1', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('6', '0', '文章管理', 'fa fa-book', '#', null, '1', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('7', '2', '添加菜单节点', '', '/admin/menu/add', null, '0', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('8', '2', '修改菜单节点', '', '/admin/menu/edit', null, '0', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('9', '2', '删除菜单节点', '', '/admin/menu/del', null, '0', '0', null, null, null, null);
+INSERT INTO `lay_menu` VALUES ('10', '3', '添加用户角色', '', '/admin/admin/add', null, '0', '0', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for lay_role
@@ -96,15 +106,18 @@ DROP TABLE IF EXISTS `lay_role`;
 CREATE TABLE `lay_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `name` varchar(155) NOT NULL COMMENT '角色名称',
-  `rule` varchar(255) DEFAULT '' COMMENT '权限节点数据',
+  `type` tinyint(255) NOT NULL DEFAULT '1' COMMENT '类型  1为受约束角色  0为超级管理员',
+  `menu_ids` varchar(255) DEFAULT '' COMMENT '权限节点数据',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态 0禁用 1启用',
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色权限表';
 
 -- ----------------------------
 -- Records of lay_role
 -- ----------------------------
-INSERT INTO `lay_role` VALUES ('1', '超级管理员', '*', null, null, null);
-INSERT INTO `lay_role` VALUES ('2', '系统维护员', '1,2,3,4,5,6,7,8,9,10,15,16,17,18,19,20,22', null, null, null);
+INSERT INTO `lay_role` VALUES ('1', '超级管理员', '0', '*', '1', null, null, null);
+INSERT INTO `lay_role` VALUES ('2', '系统维护员', '1', '1,2,,3,4', '1', null, null, null);
+INSERT INTO `lay_role` VALUES ('3', '管理员', '1', '6', '1', null, null, null);
