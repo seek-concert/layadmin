@@ -143,7 +143,8 @@ class Role extends Base
             $result = Menus::field('id,name,parent_id')->select();
             $str = '';
 
-            $rule = Roles::field('menu_ids')->where('id', $param['id'])->find();
+            $rule_arr = Roles::field('menu_ids')->where('id', $param['id'])->find();
+            $rule = $rule_arr['menu_ids'];
 
             if(!empty($rule)){
                 $rule = explode(',', $rule);
