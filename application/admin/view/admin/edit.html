@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>添加菜单节点</title>
+    <title>编辑后台用户</title>
     <link rel="shortcut icon" href="/favicon.ico">
     <link href="__STATIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__STATIC__/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
@@ -17,50 +17,51 @@
         <div class="col-sm-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>添加菜单节点</h5>
+                    <h5>编辑后台用户</h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal m-t" id="commentForm" method="post" action="{:url('menu/add')}">
-
+                    <form class="form-horizontal m-t" id="commentForm" method="post" action="{:url('admin/edit')}">
+                        <input type="hidden" name="id" value="{$infos['id']}">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">上级菜单节点：</label>
+                            <label class="col-sm-3 control-label">用户昵称：</label>
                             <div class="input-group col-sm-4">
-                                <select class="form-control" name="parent_id" required="" aria-required="true">
-                                    <option value="0">请选择</option>
-                                    {if !empty($menu_info)}
-                                    {foreach name="menu_info" item="vo"}
-                                    <option value="{$vo.id}">{$vo.name}</option>
-                                    {/foreach}
+                                <input id="name" type="text" class="form-control" name="name" required="" aria-required="true" value="{$infos['name']}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户角色：</label>
+                            <div class="input-group col-sm-4">
+                                <select class="form-control" name="role_id" required="" aria-required="true">
+                                    <option value="">请选择</option>
+                                    {if !empty($role)}
+                                        {foreach name="role" item="vo"}
+                                            <option value="{$vo.id}" {if condition="$infos['role_id'] eq $vo['id']"}selected{/if}>{$vo.name}</option>
+                                        {/foreach}
                                     {/if}
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">菜单节点名称：</label>
+                            <label class="col-sm-3 control-label">登陆账号：</label>
                             <div class="input-group col-sm-4">
-                                <input id="name" type="text" class="form-control" name="name" required="" aria-required="true" placeholder="如：系统管理">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">菜单url：</label>
-                            <div class="input-group col-sm-4">
-                                <input id="url" type="text" class="form-control" name="url" required="" aria-required="true" placeholder="如: /admin/home/index">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">图标：</label>
-                            <div class="input-group col-sm-4">
-                                <input id="icon" type="text" class="form-control" name="icon" aria-required="true" placeholder="如：fa fa-desktop">
+                                <input id="username" type="text" class="form-control" name="username" required="" aria-required="true" value="{$infos['username']}">
 
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">是否显示：</label>
+                            <label class="col-sm-3 control-label">登录密码：</label>
+                            <div class="input-group col-sm-4">
+                                <input id="password" type="password" class="form-control" name="password" required="" aria-required="true" value="{$infos['password']}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">是否启用：</label>
                             <div class="input-group col-sm-6">
-                                {foreach name='display' item='vo' key='key'}
+                                {foreach name='status' item='vo' key='key'}
                                 <div class="radio i-checks col-sm-4">
                                     <label>
-                                        <input type="radio" value="{$key}" {if condition="$key == 0 " }checked{/if} name="display"> <i></i> {$vo}</label>
+                                        <input type="radio" value="{$key}" {if condition="$key == $infos['status'] " }checked{/if} name="status"> <i></i> {$vo}</label>
                                 </div>
                                 {/foreach}
                             </div>
@@ -115,7 +116,7 @@
     $(document).ready(function(){
         $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
 
-        // 添加菜单节点
+        // 编辑后台用户
         var options = {
             beforeSubmit:showStart,
             success:showSuccess

@@ -49,7 +49,7 @@
                     {foreach name="menus" item="menu"}
                         <li class="menu">
                             <a href="{$menu['url']?:'#'}">
-                                <i class="{$menu['icon']?:''}"></i>
+                                <i class="{$menu['icon']?:'fa fa-desktop'}"></i>
                                 <span class="nav-label">{$menu['name']}</span>
                                 <span class="fa arrow"></span>
                             </a>
@@ -57,7 +57,7 @@
                                 <ul class="nav nav-second-level">
                                     {foreach name="$menu['menu_child']" item="menu_child"}
                                         <li>
-                                            <a class="J_menuItem" href="{$menu_child['url']}">{$menu_child['name']}</a>
+                                            <a class="J_menuItem" href="{$menu_child['url']?:'#'}">{$menu_child['name']}</a>
                                         </li>
                                     {/foreach}
                                 </ul>

@@ -59,6 +59,7 @@ class Index extends Controller
         $updateAdminData = array (
             'secret'        => $secret,
             'last_login_ip'       => $login_ip,
+            'updated_at'       => time(),
         );
         if (!model('admins')->where(['id'=>$admin_info['id']])->update($updateAdminData, FALSE)) {
             return json(msg(0,'','登录异常，请稍候尝试.'));

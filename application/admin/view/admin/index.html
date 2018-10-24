@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>菜单节点列表</title>
-    <link rel="shortcut icon" href="favicon.ico">
+    <title>后台用户列表</title>
+    <link rel="shortcut icon" href="/favicon.ico">
     <link href="__STATIC__/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__STATIC__/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link href="__STATIC__/admin/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
@@ -17,26 +17,19 @@
     <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>菜单节点列表</h5>
+            <h5>后台用户列表</h5>
         </div>
         <div class="ibox-content">
             <div class="form-group clearfix col-sm-1">
-                <a href="{:url('menu/tree_menu')}" >
-                    <button class="btn btn-outline btn-primary" type="button">切换树</button>
+                <a href="{:url('admin/add')}">
+                    <button class="btn btn-outline btn-primary" type="button">添加后台用户</button>
                 </a>
-
-            </div>
-            <div class="form-group clearfix col-sm-1">
-                <a href="{:url('menu/add')}">
-                    <button class="btn btn-outline btn-primary" type="button">添加菜单节点</button>
-                </a>
-
             </div>
             <!--搜索框开始-->
             <form id='commentForm' role="form" method="post" class="form-inline pull-right">
                 <div class="content clearfix m-b">
                     <div class="form-group">
-                        <label>菜单节点名称：</label>
+                        <label>后台用户名称：</label>
                         <input type="text" class="form-control" id="name" name="name">
                     </div>
                     <div class="form-group">
@@ -50,10 +43,13 @@
                 <div class="example">
                     <table id="cusTable">
                         <thead>
-                        <th data-field="id">菜单节点序号</th>
-                        <th data-field="name">菜单节点名称</th>
-                        <th data-field="url">菜单节点url</th>
-                        <th data-field="display">是否显示</th>
+                        <th data-field="id">用户ID</th>
+                        <th data-field="username">用户账号</th>
+                        <th data-field="name">用户名称</th>
+                        <th data-field="role_name">用户角色</th>
+                        <th data-field="last_login_ip">上次登录ip</th>
+                        <th data-field="updated_at">上次登录时间</th>
+                        <th data-field="status">状态</th>
                         <th data-field="operate">操作</th>
                         </thead>
                     </table>
@@ -82,7 +78,7 @@
         //初始化表格,动态从服务器加载数据
         $("#cusTable").bootstrapTable({
             method: "get",  //使用get请求到服务器获取数据
-            url: "{:url('menu/index')}", //获取数据的地址
+            url: "{:url('admin/index')}", //获取数据的地址
             striped: true,  //表格显示条纹
             pagination: true, //启动分页
             pageSize: 10,  //每页显示的记录数
@@ -123,9 +119,9 @@
     });
 
     function del(id){
-        layer.confirm('确认删除此菜单节点?', {icon: 3, title:'提示'}, function(index){
+        layer.confirm('确认删除此后台用户?', {icon: 3, title:'提示'}, function(index){
             //do something
-            $.getJSON("{:url('menu/del')}", {'id' : id}, function(res){
+            $.getJSON("{:url('admin/del')}", {'id' : id}, function(res){
                 if(1 == res.code){
                     layer.alert(res.msg, {title: '友情提示', icon: 1, closeBtn: 0}, function(){
                         initTable();

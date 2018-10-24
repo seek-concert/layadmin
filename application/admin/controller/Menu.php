@@ -109,7 +109,7 @@ class Menu extends Base
             $model = new Menus();
             $rs =  $model->save($param,['id'=>$param['id']]);
             if($rs){
-                return $this->success('修改成功!');
+                return $this->success('修改成功!',url('menu/index'));
             }else{
                 return $this->error('修改失败!');
             }
