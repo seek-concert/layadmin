@@ -24,6 +24,7 @@ class Index extends Controller
 
     /* ============ 登录处理 ============== */
     public function login(){
+        header('Content-type: application/json');
         $data = input('param.');
         if(!$data['username']){
             return json(msg(0,'','请输入用户名！'));
