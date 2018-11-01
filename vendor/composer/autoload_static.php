@@ -4,12 +4,11 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd
+class ComposerStaticInit509c9549d0dbffe4728a17cf35f01ea4
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
-        'ddc3cd2a04224f9638c5d0de6a69c7e3' => __DIR__ . '/..' . '/topthink/think-migration/src/config.php',
         'cc56288302d9df745d97c934d6a6e5f0' => __DIR__ . '/..' . '/topthink/think-queue/src/common.php',
     );
 
@@ -17,25 +16,18 @@ class ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd
         't' => 
         array (
             'think\\worker\\' => 13,
-            'think\\oracle\\' => 13,
-            'think\\mongo\\' => 12,
-            'think\\migration\\' => 16,
             'think\\helper\\' => 13,
             'think\\composer\\' => 15,
             'think\\captcha\\' => 14,
             'think\\' => 6,
         ),
-        'a' => 
-        array (
-            'app\\' => 4,
-        ),
         'W' => 
         array (
             'Workerman\\' => 10,
         ),
-        'P' => 
+        'S' => 
         array (
-            'Phinx\\' => 6,
+            'Symfony\\Component\\EventDispatcher\\' => 34,
         ),
     );
 
@@ -43,18 +35,6 @@ class ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd
         'think\\worker\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-worker/src',
-        ),
-        'think\\oracle\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-oracle/src',
-        ),
-        'think\\mongo\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-mongo/src',
-        ),
-        'think\\migration\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-migration/src',
         ),
         'think\\helper\\' => 
         array (
@@ -70,29 +50,54 @@ class ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd
         ),
         'think\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/thinkphp/library/think',
-            1 => __DIR__ . '/..' . '/topthink/think-image/src',
-            2 => __DIR__ . '/..' . '/topthink/think-queue/src',
-        ),
-        'app\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/application',
+            0 => __DIR__ . '/..' . '/topthink/think-image/src',
+            1 => __DIR__ . '/..' . '/topthink/think-queue/src',
         ),
         'Workerman\\' => 
         array (
             0 => __DIR__ . '/..' . '/workerman/workerman',
+            1 => __DIR__ . '/..' . '/workerman/workerman-for-win',
         ),
-        'Phinx\\' => 
+        'Symfony\\Component\\EventDispatcher\\' => 
         array (
-            0 => __DIR__ . '/..' . '/topthink/think-migration/phinx/src/Phinx',
+            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'Q' => 
+        array (
+            'Qcloud\\Cos\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/qcloud/cos-sdk-v5/src',
+            ),
+        ),
+        'P' => 
+        array (
+            'PHPExcel' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
+            ),
+        ),
+        'G' => 
+        array (
+            'Guzzle\\Tests' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/tests',
+            ),
+            'Guzzle' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
+            ),
         ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit509c9549d0dbffe4728a17cf35f01ea4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit509c9549d0dbffe4728a17cf35f01ea4::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit509c9549d0dbffe4728a17cf35f01ea4::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

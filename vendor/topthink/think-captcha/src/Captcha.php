@@ -34,9 +34,9 @@ class Captcha
         // 是否画混淆曲线
         'useNoise' => true,
         // 是否添加杂点
-        'imageH'   => 32,
+        'imageH'   => 0,
         // 验证码图片高度
-        'imageW'   => 100,
+        'imageW'   => 0,
         // 验证码图片宽度
         'length'   => 4,
         // 验证码位数
