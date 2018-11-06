@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : phpwamp
-Source Server Version : 50554
-Source Host           : localhost:3306
+Source Server         : layadmin
+Source Server Version : 50557
+Source Host           : 123.207.83.249:3306
 Source Database       : layadmin
 
 Target Server Type    : MYSQL
-Target Server Version : 50554
+Target Server Version : 50557
 File Encoding         : 65001
 
-Date: 2018-10-24 15:10:57
+Date: 2018-11-06 09:26:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,7 +37,7 @@ CREATE TABLE `lay_admin` (
 -- ----------------------------
 -- Records of lay_admin
 -- ----------------------------
-INSERT INTO `lay_admin` VALUES ('1', '用户', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'EA026768-6794-5A2E-843B-0FF39935F1E8', '1', '2', '127.0.0.1', null, '1540345871', null);
+INSERT INTO `lay_admin` VALUES ('1', '用户', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '01FC504B-E3D2-94D0-EAE3-3EB10385A395', '1', '2', '125.84.195.15', null, '1540523320', null);
 INSERT INTO `lay_admin` VALUES ('2', '小张', '123456', 'e10adc3949ba59abbe56e057f20f883e', '309D8163-741D-EB7D-EA07-61FB480FE0E9', '1', '2', null, null, null, null);
 
 -- ----------------------------
@@ -100,6 +100,29 @@ INSERT INTO `lay_menu` VALUES ('9', '2', '删除菜单节点', '', '/admin/menu/
 INSERT INTO `lay_menu` VALUES ('10', '3', '添加用户角色', '', '/admin/admin/add', null, '0', '0', null, null, null, null);
 
 -- ----------------------------
+-- Table structure for lay_msg
+-- ----------------------------
+DROP TABLE IF EXISTS `lay_msg`;
+CREATE TABLE `lay_msg` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `send_id` int(11) NOT NULL COMMENT '发送ID',
+  `receive_id` int(11) NOT NULL COMMENT '接收ID',
+  `content` longtext COMMENT '内容',
+  `needsend` tinyint(4) NOT NULL DEFAULT '1' COMMENT '消息状态  0已推送 1未推送',
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL,
+  `deleted_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='聊天消息表';
+
+-- ----------------------------
+-- Records of lay_msg
+-- ----------------------------
+INSERT INTO `lay_msg` VALUES ('1', '2', '1', '21111', '1', null, null, null);
+INSERT INTO `lay_msg` VALUES ('2', '1', '2', '123456', '0', '1541313185', '1541313185', null);
+INSERT INTO `lay_msg` VALUES ('3', '1', '2', '32146566', '0', '1541399585', '1541399585', null);
+
+-- ----------------------------
 -- Table structure for lay_role
 -- ----------------------------
 DROP TABLE IF EXISTS `lay_role`;
@@ -121,3 +144,26 @@ CREATE TABLE `lay_role` (
 INSERT INTO `lay_role` VALUES ('1', '超级管理员', '0', '*', '1', null, null, null);
 INSERT INTO `lay_role` VALUES ('2', '系统维护员', '1', '1,2,,3,4', '1', null, null, null);
 INSERT INTO `lay_role` VALUES ('3', '管理员', '1', '6', '1', null, null, null);
+
+-- ----------------------------
+-- Table structure for lay_user
+-- ----------------------------
+DROP TABLE IF EXISTS `lay_user`;
+CREATE TABLE `lay_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(100) NOT NULL COMMENT '用户名',
+  `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '类型  1为用户  2为客服',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态   0为离线  1为在线',
+  `sign` varchar(255) DEFAULT NULL COMMENT '签名',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL,
+  `deleted_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
+
+-- ----------------------------
+-- Records of lay_user
+-- ----------------------------
+INSERT INTO `lay_user` VALUES ('1', '客服小张', '2', '0', '时间是诠释人生的最好方式', '/static/index/img/a1_off.png', null, null, null);
+INSERT INTO `lay_user` VALUES ('2', '游客9527', '1', '1', '时间是诠释人生的最好方式', '/static/index/img/timg.jpg', null, null, null);

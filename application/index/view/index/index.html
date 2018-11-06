@@ -23,8 +23,7 @@
         var layim = layui.layim;
         //生成访客
         var ids = 1;
-        var username = '访客111';
-        var status = '1';
+        var username = '访客9527';
         var sign = '时间是诠释人生的最好方式';
         var avatar = '/static/index/img/timg.jpg';
         //基础配置
@@ -43,10 +42,9 @@
             ,title: '在线客服'
         });
         layim.chat({
-            id: 5000000,
+            id: 2,
             sign:'客服小张',
             name: '客服小张',
-            type: 'friend',
             avatar: kefu_avatar,
             //定义唯一的id方便你处理信息
         });
@@ -58,6 +56,7 @@
         //连接成功时触发
         socket.onopen = function() {
             var login_data = '{"type":"init","id":"'+ids+'","username":"'+username+'","avatar":"'+avatar+'","sign":"'+sign+'"}';
+            console.log(login_data);
             socket.send( login_data );
         };
 
@@ -68,18 +67,21 @@
             switch(data['msg_type']){
                 // 登录 更新用户列表
                 case 'init':
-                    // console.log(data['id']+"登录成功");
+                    console.log(data['id']+"登录成功");
                     // layim.getMessage(res.data); //res.data即你发送消息传递的数据（阅读：监听发送的消息）
                     break;
                 // 检测聊天数据
                 case 'chatMessage':
                     // console.log('检测聊天数据'+data.data);
-                    layim.getMessage(data.data);
+                    if(data.data.id==ids){
+                        layim.getMessage(data.data);
+                    }
                     break;
                 // 离线消息推送
                 case 'logMessage':
                     setTimeout(function(){layim.getMessage(data.data)}, 1000);
-                    layim.getMessage(data.data);
+                    // layim.getMessage(data.data);
+                    console.log(data.data);
                     break;
                 // 用户退出 更新用户列表
                 case 'logout':
@@ -91,14 +93,14 @@
 
             }
         };
-        // //layim建立就绪
-        // layim.on('sendMessage', function(res){
-        //     // 发送消息
-        //     var mine = JSON.stringify(res.mine);
-        //     var to = JSON.stringify(res.to);
-        //     var login_data = '{"type":"chatMessage","data":{"mine":'+mine+', "to":'+to+'}}';
-        //     socket.send(login_data);
-        // });
+        //layim建立就绪
+        layim.on('sendMessage', function(res){
+            // 发送消息
+            var mine = JSON.stringify(res.mine);
+            var to = JSON.stringify(res.to);
+            var login_data = '{"type":"chatMessage","data":{"mine":'+mine+', "to":'+to+'}}';
+            socket.send(login_data);
+        });
     });
 </script>
 </body>
