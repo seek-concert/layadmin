@@ -9,10 +9,35 @@
             line-height: 10px !important;
         }
     </style>
+    <script src="__STATIC__/index/jquery.min.js"></script>
+    <script>
+        //生成访客
+        $.ajax({
+            url:"{:url('index/add_chatuser')}",
+            data:{},
+            type:'get',
+            dataType:'json',
+            success:function (rs) {
+                $('.ids').val(rs.data.id);
+                $('.username').val(rs.data.username);
+                $('.status').val(rs.data.status);
+                $('.sign').val(rs.data.sign);
+                $('.avatar').val(rs.data.avatar);
+            },
+            error:function () {
+                layer.msg('网络错误');
+            }
+        });
+    </script>
 </head>
 <body>
+<input type="hidden" class="ids" value="">
+<input type="hidden" class="status" value="">
+<input type="hidden" class="sign" value="">
+<input type="hidden" class="username" value="">
+<input type="hidden" class="avatar" value="">
   hello  word!
-  <script src="__STATIC__/index/jquery.min.js"></script>
+
 <script src="__STATIC__/index/layui/layui.js"></script>
 <script>
     //创建客服面板************************************
@@ -22,10 +47,12 @@
     layui.use('layim', function() {
         var layim = layui.layim;
         //生成访客
-        var ids = 1;
-        var username = '访客9527';
-        var sign = '时间是诠释人生的最好方式';
-        var avatar = '/static/index/img/timg.jpg';
+        //生成访客
+        var ids = $('.ids').val();
+        var username = $('.username').val();
+        var status = $('.status').val();
+        var sign = $('.sign').val();
+        var avatar = $('.avatar').val();
         //基础配置
         layim.config({
             brief: true,
@@ -42,7 +69,7 @@
             ,title: '在线客服'
         });
         layim.chat({
-            id: 2,
+            id: 1,
             sign:'客服小张',
             name: '客服小张',
             avatar: kefu_avatar,

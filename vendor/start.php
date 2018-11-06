@@ -102,7 +102,7 @@ left join lay_user on lay_msg.send_id=lay_user.id where lay_msg.receive_id= {$ui
             $sqls = "insert into lay_msg(send_id,receive_id,content,created_at,needsend) values 
               ({$param['send_id']},{$param['receive_id']},'{$param['content']}',{$param['created_at']},{$param['needsend']})";
             $db1->exec($sqls);
-            var_dump($sqls);
+
             return;
             break;
         case 'hide':
