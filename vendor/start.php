@@ -6,10 +6,10 @@ require_once __DIR__ . '/workerman/Autoloader.php';
 $ws_worker = new Worker("websocket://0.0.0.0:40000");
 
 // 启动4个进程对外提供服务
-$ws_worker->count = 4;
+$ws_worker->count = 1;
 
 // 当收到客户端发来的数据后返回hello $data给客户端
-$ws_worker->onMessage = function($connection, $data)
+$ws_worker->onMessage = function($connection, $data) use ($ws_worker)
 {
     $message = json_decode($data,true);
     $msg_type = $message['type'];
@@ -34,6 +34,7 @@ $ws_worker->onMessage = function($connection, $data)
                 'msg_type' => 'init',
                 'id'           => $uid,
             );
+
             $connection->send(json_encode($init_message));
 
             //查询最近1周有无需要推送的离线信息
@@ -83,6 +84,7 @@ left join lay_user on lay_msg.send_id=lay_user.id where lay_msg.receive_id= {$ui
                     'timestamp'=> time()*1000,
                 ]
             ];
+
             $connection->send(json_encode($chat_message));
             //聊天记录数组
             $param = [

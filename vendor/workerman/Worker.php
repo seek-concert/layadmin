@@ -113,6 +113,13 @@ class Worker
     public $count = 1;
 
     /**
+     * array of worker uid.(new insert)
+     *
+     * @var array
+     */
+    public $uidConnections = [];
+
+    /**
      * Unix user of processes, needs appropriate privileges (usually root).
      *
      * @var string

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : layadmin
-Source Server Version : 50557
-Source Host           : 123.207.83.249:3306
+Source Server         : phpwamp
+Source Server Version : 50554
+Source Host           : localhost:3306
 Source Database       : layadmin
 
 Target Server Type    : MYSQL
-Target Server Version : 50557
+Target Server Version : 50554
 File Encoding         : 65001
 
-Date: 2018-11-06 09:26:36
+Date: 2018-11-07 09:29:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,8 +37,8 @@ CREATE TABLE `lay_admin` (
 -- ----------------------------
 -- Records of lay_admin
 -- ----------------------------
-INSERT INTO `lay_admin` VALUES ('1', '用户', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '01FC504B-E3D2-94D0-EAE3-3EB10385A395', '1', '2', '125.84.195.15', null, '1540523320', null);
-INSERT INTO `lay_admin` VALUES ('2', '小张', '123456', 'e10adc3949ba59abbe56e057f20f883e', '309D8163-741D-EB7D-EA07-61FB480FE0E9', '1', '2', null, null, null, null);
+INSERT INTO `lay_admin` VALUES ('1', 'ADMIN', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '8362630D-A465-E9A1-0AAB-E1C528C0CB54', '1', '2', '127.0.0.1', null, '1540430572', null);
+INSERT INTO `lay_admin` VALUES ('2', '小张', '123456', 'e10adc3949ba59abbe56e057f20f883e', '5AC0B682-925B-ECFC-ED4D-874B2F235AE0', '1', '3', '127.0.0.1', null, '1540367156', null);
 
 -- ----------------------------
 -- Table structure for lay_config
@@ -113,14 +113,12 @@ CREATE TABLE `lay_msg` (
   `updated_at` int(11) DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='聊天消息表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='聊天消息表';
 
 -- ----------------------------
 -- Records of lay_msg
 -- ----------------------------
-INSERT INTO `lay_msg` VALUES ('1', '2', '1', '21111', '1', null, null, null);
-INSERT INTO `lay_msg` VALUES ('2', '1', '2', '123456', '0', '1541313185', '1541313185', null);
-INSERT INTO `lay_msg` VALUES ('3', '1', '2', '32146566', '0', '1541399585', '1541399585', null);
+INSERT INTO `lay_msg` VALUES ('1', '3', '1', '111', '1', '1541474297', null, null);
 
 -- ----------------------------
 -- Table structure for lay_role
@@ -143,7 +141,7 @@ CREATE TABLE `lay_role` (
 -- ----------------------------
 INSERT INTO `lay_role` VALUES ('1', '超级管理员', '0', '*', '1', null, null, null);
 INSERT INTO `lay_role` VALUES ('2', '系统维护员', '1', '1,2,,3,4', '1', null, null, null);
-INSERT INTO `lay_role` VALUES ('3', '管理员', '1', '6', '1', null, null, null);
+INSERT INTO `lay_role` VALUES ('3', '管理员', '1', '1,2,7,8,6', '1', null, null, null);
 
 -- ----------------------------
 -- Table structure for lay_user
@@ -152,18 +150,22 @@ DROP TABLE IF EXISTS `lay_user`;
 CREATE TABLE `lay_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL COMMENT '用户名',
+  `password` varchar(100) NOT NULL COMMENT '密码  ',
+  `groupid` tinyint(4) DEFAULT NULL,
   `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '类型  1为用户  2为客服',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态   0为离线  1为在线',
   `sign` varchar(255) DEFAULT NULL COMMENT '签名',
   `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+  `reg_ip` varchar(100) NOT NULL COMMENT '注册IP',
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of lay_user
 -- ----------------------------
-INSERT INTO `lay_user` VALUES ('1', '客服小张', '2', '0', '时间是诠释人生的最好方式', '/static/index/img/a1_off.png', null, null, null);
-INSERT INTO `lay_user` VALUES ('2', '游客9527', '1', '1', '时间是诠释人生的最好方式', '/static/index/img/timg.jpg', null, null, null);
+INSERT INTO `lay_user` VALUES ('1', '客服小张', 'e10adc3949ba59abbe56e057f20f883e', '1', '2', '1', '时间是诠释人生的最好方式', '/static/index/img/a1_off.png', '127.0.0.1', '1541474086', null, null);
+INSERT INTO `lay_user` VALUES ('2', '游客9527', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '1', '时间是诠释人生的最好方式', '/static/index/img/timg.jpg', '127.0.0.1', '1541474086', null, null);
+INSERT INTO `lay_user` VALUES ('3', '游客201811061114464477', 'e10adc3949ba59abbe56e057f20f883e', '2', '1', '1', '游客', 'http://chongmai.oss-cn-shanghai.aliyuncs.com/imgall/20180713/5b481935b7c5b.png', '218.70.202.73', '1541474086', null, null);
